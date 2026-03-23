@@ -1,5 +1,7 @@
 import { IUserRepository } from '../../../domain/repositories/user.repository.interface';
 import { ILogger } from '../../ports/logger.port';
+import { Result, ok, err } from '../../../domain/shared/result';
+import { UserNotFoundError } from '../../../domain/errors/user-not-found.error';
 import { GetUserQuery, GetUserResponse } from './get-user.dto';
 import { GetUserMapper } from './get-user.mapper';
 
@@ -9,18 +11,18 @@ export class GetUserUseCase {
     private readonly logger: ILogger,
   ) {}
 
-  async execute(query: GetUserQuery): Promise<GetUserResponse | null> {
+  async execute(query: GetUserQuery): Promise<Result<GetUserResponse, UserNotFoundError>> {
     this.logger.log(`[GetUserUseCase] Fetching user with id: ${query.userId}`);
 
     const user = await this.userRepository.findById(query.userId);
 
     if (!user) {
       this.logger.warn(`[GetUserUseCase] User not found: ${query.userId}`);
-      return null;
+      return err(new UserNotFoundError(query.userId));
     }
 
     this.logger.log(`[GetUserUseCase] User found: ${user.name}`);
 
-    return GetUserMapper.toResponse(user);
+    return ok(GetUserMapper.toResponse(user));
   }
 }

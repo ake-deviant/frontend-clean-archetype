@@ -3,8 +3,7 @@ import { UserViewModel } from './user.view-model';
 import { UserMapper } from './user.mapper';
 
 export class GetUserPresenter {
-  present(response: GetUserResponse | null): UserViewModel | null {
-    if (!response) return null;
+  present(response: GetUserResponse): UserViewModel {
     return UserMapper.toViewModel(response);
   }
 }

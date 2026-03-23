@@ -10,8 +10,14 @@ export function UserPage() {
   useEffect(() => {
     getUserUseCase
       .execute({ userId: '1' })
-      .then((response) => setUser(getUserPresenter.present(response)))
-      .catch(() => setError('Failed to load user.'))
+      .then((result) => {
+        if (result.isErr) {
+          setError(result.error.message);
+          return;
+        }
+        setUser(getUserPresenter.present(result.value));
+      })
+      .catch(() => setError('An unexpected error occurred.'))
       .finally(() => setIsLoading(false));
   }, []);
 

@@ -17,10 +17,16 @@ export class UserComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const response = await this.useCase.execute({ userId: '1' });
-      this.user.set(this.presenter.present(response));
+      const result = await this.useCase.execute({ userId: '1' });
+
+      if (result.isErr) {
+        this.error.set(result.error.message);
+        return;
+      }
+
+      this.user.set(this.presenter.present(result.value));
     } catch {
-      this.error.set('Failed to load user.');
+      this.error.set('An unexpected error occurred.');
     } finally {
       this.isLoading.set(false);
     }
