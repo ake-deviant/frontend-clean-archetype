@@ -18,6 +18,7 @@ export { ConsoleLogger } from './infrastructure/adapters/console-logger.adapter'
 export { LocalStorageAdapter } from './infrastructure/adapters/local-storage.adapter';
 export { CookieAdapter } from './infrastructure/adapters/cookie.adapter';
 export { FetchHttpClient } from './infrastructure/adapters/fetch-http-client.adapter';
+export { AxiosHttpClient } from './infrastructure/adapters/axios-http-client.adapter';
 
 // Presentation
 export type { UserViewModel } from './presentation/user/user.view-model';
