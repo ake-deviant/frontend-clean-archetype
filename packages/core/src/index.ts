@@ -11,6 +11,7 @@ export type { IHttpClient, HttpOptions } from './application/ports/http-client.p
 // Application — Use Cases
 export type { GetUserQuery, GetUserResponse } from './application/use-cases/get-user/get-user.dto';
 export { GetUserUseCase } from './application/use-cases/get-user/get-user.use-case';
+export { GetUserMapper } from './application/use-cases/get-user/get-user.mapper';
 
 // Infrastructure
 export { InMemoryUserRepository } from './infrastructure/repositories/in-memory-user.repository';
@@ -23,3 +24,4 @@ export { AxiosHttpClient } from './infrastructure/adapters/axios-http-client.ada
 // Presentation
 export type { UserViewModel } from './presentation/user/user.view-model';
 export { GetUserPresenter } from './presentation/user/get-user.presenter';
+export { UserMapper } from './presentation/user/user.mapper';

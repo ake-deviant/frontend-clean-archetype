@@ -1,6 +1,7 @@
 import { IUserRepository } from '../../../domain/repositories/user.repository.interface';
 import { ILogger } from '../../ports/logger.port';
 import { GetUserQuery, GetUserResponse } from './get-user.dto';
+import { GetUserMapper } from './get-user.mapper';
 
 export class GetUserUseCase {
   constructor(
@@ -20,10 +21,6 @@ export class GetUserUseCase {
 
     this.logger.log(`[GetUserUseCase] User found: ${user.name}`);
 
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
+    return GetUserMapper.toResponse(user);
   }
 }
