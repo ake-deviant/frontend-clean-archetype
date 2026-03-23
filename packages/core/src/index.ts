@@ -1,6 +1,10 @@
 // Domain
 export type { User } from './domain/entities/user.entity';
 export type { IUserRepository } from './domain/repositories/user.repository.interface';
+export { DomainError } from './domain/errors/domain.error';
+export { UserNotFoundError } from './domain/errors/user-not-found.error';
+export type { Result } from './domain/shared/result';
+export { ok, err, Ok, Err } from './domain/shared/result';
 
 // Application — Ports
 export type { ILogger } from './application/ports/logger.port';
