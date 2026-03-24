@@ -8,9 +8,9 @@ build/
 # Angular cache
 .angular/
 
-# Environment
-.env
+# Environment — local overrides only (committed .env files are safe, they contain no secrets)
 .env.local
+.env.*.local
 
 # Logs
 *.log

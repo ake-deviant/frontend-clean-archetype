@@ -56,10 +56,7 @@ describe('HttpUserRepository', () => {
 
   describe('findAll', () => {
     it('should return a list of users when HTTP response is successful', async () => {
-      const users: User[] = [
-        mockUser,
-        { id: '2', name: 'Bob Martin', email: 'bob@example.com' },
-      ];
+      const users: User[] = [mockUser, { id: '2', name: 'Bob Martin', email: 'bob@example.com' }];
       mockHttpClient.get.mockResolvedValue(users);
 
       const result = await repository.findAll();

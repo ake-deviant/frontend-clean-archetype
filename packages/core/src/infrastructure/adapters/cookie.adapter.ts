@@ -2,9 +2,7 @@ import { ICookieService, CookieOptions } from '../../application/ports/cookie.po
 
 export class CookieAdapter implements ICookieService {
   get(name: string): string | undefined {
-    const match = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith(`${name}=`));
+    const match = document.cookie.split('; ').find((row) => row.startsWith(`${name}=`));
     return match ? decodeURIComponent(match.split('=')[1]) : undefined;
   }
 

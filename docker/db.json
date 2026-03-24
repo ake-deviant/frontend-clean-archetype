@@ -1,6 +1,6 @@
 {
   "users": [
-    { "id": "1", "name": "Alice Dup888ont", "email": "alice@example.com" },
+    { "id": "1", "name": "Alice Dupont", "email": "alice@example.com" },
     { "id": "2", "name": "Bob Martin", "email": "bob@example.com" }
   ]
 }

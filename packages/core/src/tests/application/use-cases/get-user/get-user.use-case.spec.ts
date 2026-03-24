@@ -59,9 +59,7 @@ describe('GetUserUseCase', () => {
 
       await useCase.execute({ userId: '1' });
 
-      expect(mockLogger.log).toHaveBeenCalledWith(
-        '[GetUserUseCase] Fetching user with id: 1',
-      );
+      expect(mockLogger.log).toHaveBeenCalledWith('[GetUserUseCase] Fetching user with id: 1');
     });
   });
 });

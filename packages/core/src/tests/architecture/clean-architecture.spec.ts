@@ -19,9 +19,7 @@ function getImportsFromFile(filePath: string): string[] {
 
 function getLayerFiles(layer: string): string[] {
   const layerPath = path.join(SRC_ROOT, layer);
-  return getFilesRecursively(layerPath).filter(
-    (f) => f.endsWith('.ts') && !f.endsWith('.spec.ts'),
-  );
+  return getFilesRecursively(layerPath).filter((f) => f.endsWith('.ts') && !f.endsWith('.spec.ts'));
 }
 
 function assertLayerDoesNotImport(sourceLayer: string, forbiddenLayer: string): void {

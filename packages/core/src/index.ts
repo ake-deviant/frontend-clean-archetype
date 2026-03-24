@@ -16,6 +16,9 @@ export type { IHttpClient, HttpOptions } from './application/ports/http-client.p
 export type { GetUserQuery, GetUserResponse } from './application/use-cases/get-user/get-user.dto';
 export { GetUserUseCase } from './application/use-cases/get-user/get-user.use-case';
 export { GetUserMapper } from './application/use-cases/get-user/get-user.mapper';
+export type { GetAllUsersResponse } from './application/use-cases/get-all-users/get-all-users.dto';
+export { GetAllUsersUseCase } from './application/use-cases/get-all-users/get-all-users.use-case';
+export { GetAllUsersMapper } from './application/use-cases/get-all-users/get-all-users.mapper';
 
 // Infrastructure
 export { InMemoryUserRepository } from './infrastructure/repositories/in-memory-user.repository';
@@ -29,4 +32,5 @@ export { AxiosHttpClient } from './infrastructure/adapters/axios-http-client.ada
 // Presentation
 export type { UserViewModel } from './presentation/user/user.view-model';
 export { GetUserPresenter } from './presentation/user/get-user.presenter';
+export { GetAllUsersPresenter } from './presentation/user/get-all-users.presenter';
 export { UserMapper } from './presentation/user/user.mapper';

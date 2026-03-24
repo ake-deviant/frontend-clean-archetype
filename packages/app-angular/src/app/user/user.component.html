@@ -1,15 +1,21 @@
-<div class="user-card">
-  @if (isLoading()) {
-    <p>Loading...</p>
-  } @else if (error()) {
-    <p>{{ error() }}</p>
-  } @else if (user()) {
-    <h2>{{ user()!.fullName }}</h2>
-    <p>{{ user()!.email }}</p>
-    <small>{{ user()!.displayLabel }}</small>
-  } @else {
-    <p>No user found.</p>
+@if (isLoading()) {
+  <p>Loading...</p>
+} @else if (error()) {
+  <p>{{ error() }}</p>
+} @else {
+  @if (user()) {
+    <div class="user-card">
+      <h2>{{ user()!.fullName }}</h2>
+      <p>{{ user()!.email }}</p>
+      <small>{{ user()!.displayLabel }}</small>
+    </div>
   }
 
-  <button (click)="loadUser()">Refresh</button>
-</div>
+  <ul>
+    @for (u of users(); track u.id) {
+      <li>{{ u.displayLabel }}</li>
+    }
+  </ul>
+}
+
+<button (click)="loadAll()">Refresh</button>

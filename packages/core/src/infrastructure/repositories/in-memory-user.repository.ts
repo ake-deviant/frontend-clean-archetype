@@ -2,7 +2,7 @@ import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 
 const SEED_USERS: User[] = [
-  { id: '1', name: 'AliceHH DupontHH', email: 'alice@example.com' },
+  { id: '1', name: 'Alice Dupont', email: 'alice@example.com' },
   { id: '2', name: 'Bob Martin', email: 'bob@example.com' },
 ];
 
