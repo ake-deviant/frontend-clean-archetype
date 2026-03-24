@@ -8,6 +8,17 @@
   "scripts": {
     "test": "npm run test --workspace=packages/core",
     "build": "npm run build --workspaces --if-present",
-    "build:core": "npm run build --workspace=packages/core"
+    "build:core": "npm run build --workspace=packages/core",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.1",
+    "typescript-eslint": "^8.57.2"
   }
 }
