@@ -1,0 +1,9 @@
+services:
+  api:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./db.json:/app/db.json
+    ports:
+      - "3001:3001"
+    command: sh -c "npx --yes json-server db.json --host 0.0.0.0 --port 3001"

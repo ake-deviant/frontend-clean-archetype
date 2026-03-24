@@ -1,24 +1,17 @@
-import { useEffect, useState } from 'react';
-import { UserViewModel } from '@frontend-archetype/core';
-import { getUserPresenter, getUserUseCase } from '../di/container';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { fetchUser } from './user.slice';
 
 export function UserPage() {
-  const [user, setUser] = useState<UserViewModel | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { user, isLoading, error } = useAppSelector((state) => state.user);
+
+  const loadUser = () => {
+    dispatch(fetchUser('1'));
+  };
 
   useEffect(() => {
-    getUserUseCase
-      .execute({ userId: '1' })
-      .then((result) => {
-        if (result.isErr) {
-          setError(result.error.message);
-          return;
-        }
-        setUser(getUserPresenter.present(result.value));
-      })
-      .catch(() => setError('An unexpected error occurred.'))
-      .finally(() => setIsLoading(false));
+    loadUser();
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
@@ -30,6 +23,8 @@ export function UserPage() {
       <h2>{user.fullName}</h2>
       <p>{user.email}</p>
       <small>{user.displayLabel}</small>
+      <br />
+      <button onClick={loadUser}>Refresh</button>
     </div>
   );
 }

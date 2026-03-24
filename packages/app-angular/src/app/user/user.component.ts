@@ -12,10 +12,17 @@ export class UserComponent implements OnInit {
   private readonly presenter = inject(GET_USER_PRESENTER);
 
   readonly user = signal<UserViewModel | null>(null);
-  readonly isLoading = signal(true);
+  readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.loadUser();
+  }
+
+  async loadUser(): Promise<void> {
+    this.isLoading.set(true);
+    this.error.set(null);
+
     try {
       const result = await this.useCase.execute({ userId: '1' });
 

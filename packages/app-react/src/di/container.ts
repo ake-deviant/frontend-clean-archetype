@@ -1,11 +1,13 @@
 import {
+  AxiosHttpClient,
   ConsoleLogger,
   GetUserPresenter,
   GetUserUseCase,
-  InMemoryUserRepository,
+  HttpUserRepository,
 } from '@frontend-archetype/core';
 
-const userRepository = new InMemoryUserRepository();
+const http = new AxiosHttpClient('http://localhost:3001');
+const userRepository = new HttpUserRepository(http);
 const logger = new ConsoleLogger();
 
 export const getUserUseCase = new GetUserUseCase(userRepository, logger);

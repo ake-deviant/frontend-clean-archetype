@@ -19,6 +19,7 @@ export { GetUserMapper } from './application/use-cases/get-user/get-user.mapper'
 
 // Infrastructure
 export { InMemoryUserRepository } from './infrastructure/repositories/in-memory-user.repository';
+export { HttpUserRepository } from './infrastructure/repositories/http-user.repository';
 export { ConsoleLogger } from './infrastructure/adapters/console-logger.adapter';
 export { LocalStorageAdapter } from './infrastructure/adapters/local-storage.adapter';
 export { CookieAdapter } from './infrastructure/adapters/cookie.adapter';
