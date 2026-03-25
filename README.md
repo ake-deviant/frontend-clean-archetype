@@ -4,6 +4,8 @@
 
 A front-end monorepo structured around Clean Architecture. The business logic (`packages/core`) is 100% framework-agnostic and shared between an Angular app and a React app.
 
+The project implements a concrete domain: article catalogue, cart with VAT calculation, and mock authentication. The same core is consumed by both apps — no duplication, no rewrite when switching framework.
+
 ---
 
 ## Architecture
@@ -36,18 +38,20 @@ frontend-archetype/
 │   ├── core/                          # Shared business logic (@frontend-archetype/core)
 │   │   └── src/
 │   │       ├── domain/
-│   │       │   ├── entities/          # User
-│   │       │   ├── repositories/      # IUserRepository
-│   │       │   ├── errors/            # DomainError, UserNotFoundError
+│   │       │   ├── entities/          # User, Article, Cart, CartItem
+│   │       │   ├── repositories/      # IUserRepository, IArticleRepository
+│   │       │   ├── errors/            # DomainError, UserNotFoundError, ArticleNotFoundError
 │   │       │   └── shared/            # Result<T, E>
 │   │       ├── application/
-│   │       │   ├── ports/             # ILogger, IHttpClient, IStorageService, ICookieService
-│   │       │   └── use-cases/         # GetUserUseCase, GetAllUsersUseCase
+│   │       │   ├── ports/             # ILogger, IHttpClient, IStorageService, ICookieService, IAuthService
+│   │       │   └── use-cases/         # GetUser, GetAllUsers, GetArticle, GetAllArticles, AddToCart, Login
 │   │       ├── infrastructure/
-│   │       │   ├── repositories/      # InMemoryUserRepository, HttpUserRepository
+│   │       │   ├── repositories/      # InMemoryUserRepository, HttpUserRepository, InMemoryArticleRepository, HttpArticleRepository
+│   │       │   ├── services/          # MockAuthService
 │   │       │   └── adapters/          # ConsoleLogger, AxiosHttpClient, FetchHttpClient...
 │   │       ├── presentation/
-│   │       │   └── user/              # UserViewModel, GetUserPresenter, GetAllUsersPresenter
+│   │       │   ├── user/              # UserViewModel, GetUserPresenter, GetAllUsersPresenter
+│   │       │   └── article/           # ArticleViewModel, CartViewModel, GetAllArticlesPresenter, AddToCartPresenter
 │   │       └── tests/
 │   │           ├── architecture/      # Dependency rule tests
 │   │           ├── application/       # Use case tests
@@ -84,6 +88,8 @@ npm run docker:up
 # API available at http://localhost:3001
 # GET http://localhost:3001/users
 # GET http://localhost:3001/users/1
+# GET http://localhost:3001/articles
+# GET http://localhost:3001/articles/1
 ```
 
 ### Run the apps
@@ -201,15 +207,15 @@ Dependencies are declared via typed tokens and resolved automatically:
 // di/tokens.ts — typed registry
 type AppRegistry = {
   httpClient: IHttpClient;
-  userRepository: IUserRepository;
-  getUserUseCase: GetUserUseCase;
+  articleRepository: IArticleRepository;
+  addToCartUseCase: AddToCartUseCase;
   // ...
 };
 
 // di/container.ts — composition root
 container.bind(DI_TOKENS.HTTP_CLIENT).toFactory(() => new AxiosHttpClient(env.apiUrl));
-container.bind(DI_TOKENS.USER_REPOSITORY).toClass(HttpUserRepository, [DI_TOKENS.HTTP_CLIENT]);
-container.bind(DI_TOKENS.GET_USER_USE_CASE).toClass(GetUserUseCase, [DI_TOKENS.USER_REPOSITORY, DI_TOKENS.LOGGER]);
+container.bind(DI_TOKENS.ARTICLE_REPOSITORY).toClass(HttpArticleRepository, [DI_TOKENS.HTTP_CLIENT]);
+container.bind(DI_TOKENS.ADD_TO_CART_USE_CASE).toClass(AddToCartUseCase, [DI_TOKENS.ARTICLE_REPOSITORY, DI_TOKENS.LOGGER]);
 
 // usage — fully typed
 const useCase = container.get(DI_TOKENS.GET_USER_USE_CASE);

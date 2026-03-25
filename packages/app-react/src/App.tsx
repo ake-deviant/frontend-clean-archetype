@@ -1,12 +1,18 @@
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import { UserPage } from './user/UserPage';
+import { AuthBar } from './auth/AuthBar';
+import { ArticlePage } from './article/ArticlePage';
 
 export default function App() {
   return (
     <Provider store={store}>
-      <h1>Frontend Archetype — React</h1>
-      <UserPage />
+      <header>
+        <h1>Frontend Archetype — React</h1>
+        <AuthBar />
+      </header>
+      <main>
+        <ArticlePage />
+      </main>
     </Provider>
   );
 }
