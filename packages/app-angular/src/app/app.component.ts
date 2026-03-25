@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
-import { UserComponent } from './user/user.component';
+import { ArticleComponent } from './article/article.component';
+import { AuthComponent } from './auth/auth.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UserComponent],
+  imports: [AuthComponent, ArticleComponent],
   template: `
-    <h1>Frontend Archetype — Angular</h1>
-    <app-user />
+    <header>
+      <h1>Frontend Archetype — Angular</h1>
+      <app-auth />
+    </header>
+    <main>
+      <app-article />
+    </main>
   `,
 })
 export class AppComponent {}
