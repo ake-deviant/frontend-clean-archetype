@@ -51,8 +51,8 @@ frontend-archetype/
 │   │           ├── application/       # Tests des use cases
 │   │           ├── infrastructure/    # Tests des repositories
 │   │           └── presentation/      # Tests des presenters
-│   ├── app-angular/                   # App Angular 17 standalone + Signals
-│   └── app-react/                     # App React 18 + Redux Toolkit
+│   ├── app-angular/                   # App Angular 17 standalone + Signals + InjectionToken
+│   └── app-react/                     # App React 18 + Redux Toolkit + ioctopus (container IoC)
 ├── docker/
 │   ├── docker-compose.yml             # JSON Server (API de développement)
 │   └── db.json                        # Données seed
@@ -188,8 +188,32 @@ new FetchHttpClient(baseUrl)   // utilise fetch natif
 
 L'assemblage des dépendances se fait en un seul endroit par app, sans que le core ne sache quel adapter est utilisé :
 
-- Angular : `src/app/di/app.providers.ts`
-- React : `src/di/container.ts`
+- Angular : `src/app/di/app.providers.ts` — utilise les `InjectionToken` natifs d'Angular + `useFactory`
+- React : `src/di/container.ts` — utilise [ioctopus](https://www.npmjs.com/package/@evyweb/ioctopus), un conteneur IoC léger
+
+#### Conteneur IoC React (ioctopus)
+
+Les dépendances sont déclarées via des tokens typés et résolues automatiquement :
+
+```typescript
+// di/tokens.ts — registre typé
+type AppRegistry = {
+  httpClient: IHttpClient;
+  userRepository: IUserRepository;
+  getUserUseCase: GetUserUseCase;
+  // ...
+};
+
+// di/container.ts — composition root
+container.bind(DI_TOKENS.HTTP_CLIENT).toFactory(() => new AxiosHttpClient(env.apiUrl));
+container.bind(DI_TOKENS.USER_REPOSITORY).toClass(HttpUserRepository, [DI_TOKENS.HTTP_CLIENT]);
+container.bind(DI_TOKENS.GET_USER_USE_CASE).toClass(GetUserUseCase, [DI_TOKENS.USER_REPOSITORY, DI_TOKENS.LOGGER]);
+
+// utilisation — entièrement typé
+const useCase = container.get(DI_TOKENS.GET_USER_USE_CASE);
+```
+
+Changer d'implémentation ne nécessite de modifier qu'un seul appel `bind`.
 
 ### Variables d'environnement
 

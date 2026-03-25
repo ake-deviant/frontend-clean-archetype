@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@evyweb/ioctopus": "^1.4.0",
     "@frontend-archetype/core": "*",
     "@reduxjs/toolkit": "^2.11.2",
     "react": "^18.3.1",

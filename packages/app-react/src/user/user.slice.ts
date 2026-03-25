@@ -1,11 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { UserViewModel } from '@frontend-archetype/core';
-import {
-  getAllUsersPresenter,
-  getAllUsersUseCase,
-  getUserPresenter,
-  getUserUseCase,
-} from '../di/container';
+import { container } from '../di/container';
+import { DI_TOKENS } from '../di/tokens';
 
 interface UserState {
   user: UserViewModel | null;
@@ -24,15 +20,21 @@ const initialState: UserState = {
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
   async (userId: string, { rejectWithValue }) => {
-    const result = await getUserUseCase.execute({ userId });
+    const useCase = container.get(DI_TOKENS.GET_USER_USE_CASE);
+    const presenter = container.get(DI_TOKENS.GET_USER_PRESENTER);
+
+    const result = await useCase.execute({ userId });
     if (result.isErr) return rejectWithValue(result.error.message);
-    return getUserPresenter.present(result.value);
+    return presenter.present(result.value);
   },
 );
 
 export const fetchAllUsers = createAsyncThunk('user/fetchAllUsers', async () => {
-  const result = await getAllUsersUseCase.execute();
-  if (result.isOk) return getAllUsersPresenter.present(result.value);
+  const useCase = container.get(DI_TOKENS.GET_ALL_USERS_USE_CASE);
+  const presenter = container.get(DI_TOKENS.GET_ALL_USERS_PRESENTER);
+
+  const result = await useCase.execute();
+  if (result.isOk) return presenter.present(result.value);
   return [];
 });
 

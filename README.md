@@ -53,8 +53,8 @@ frontend-archetype/
 │   │           ├── application/       # Use case tests
 │   │           ├── infrastructure/    # Repository tests
 │   │           └── presentation/      # Presenter tests
-│   ├── app-angular/                   # Angular 17 standalone + Signals
-│   └── app-react/                     # React 18 + Redux Toolkit
+│   ├── app-angular/                   # Angular 17 standalone + Signals + InjectionToken
+│   └── app-react/                     # React 18 + Redux Toolkit + ioctopus (IoC container)
 ├── docker/
 │   ├── docker-compose.yml             # JSON Server (development API)
 │   └── db.json                        # Seed data
@@ -190,8 +190,32 @@ new FetchHttpClient(baseUrl)   // uses native fetch
 
 Dependency wiring happens in a single place per app — the core never knows which adapter is used:
 
-- Angular: `src/app/di/app.providers.ts`
-- React: `src/di/container.ts`
+- **Angular**: `src/app/di/app.providers.ts` — uses Angular's native `InjectionToken` + `useFactory`
+- **React**: `src/di/container.ts` — uses [ioctopus](https://www.npmjs.com/package/@evyweb/ioctopus), a lightweight IoC container
+
+#### React IoC container (ioctopus)
+
+Dependencies are declared via typed tokens and resolved automatically:
+
+```typescript
+// di/tokens.ts — typed registry
+type AppRegistry = {
+  httpClient: IHttpClient;
+  userRepository: IUserRepository;
+  getUserUseCase: GetUserUseCase;
+  // ...
+};
+
+// di/container.ts — composition root
+container.bind(DI_TOKENS.HTTP_CLIENT).toFactory(() => new AxiosHttpClient(env.apiUrl));
+container.bind(DI_TOKENS.USER_REPOSITORY).toClass(HttpUserRepository, [DI_TOKENS.HTTP_CLIENT]);
+container.bind(DI_TOKENS.GET_USER_USE_CASE).toClass(GetUserUseCase, [DI_TOKENS.USER_REPOSITORY, DI_TOKENS.LOGGER]);
+
+// usage — fully typed
+const useCase = container.get(DI_TOKENS.GET_USER_USE_CASE);
+```
+
+Swapping an implementation only requires changing one `bind` call.
 
 ### Environment variables
 
