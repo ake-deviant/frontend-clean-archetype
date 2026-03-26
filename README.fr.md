@@ -56,7 +56,8 @@ frontend-archetype/
 │   │           ├── infrastructure/    # Tests des repositories
 │   │           └── presentation/      # Tests des presenters
 │   ├── app-angular/                   # App Angular 17 standalone + Signals + InjectionToken
-│   └── app-react/                     # App React 18 + Redux Toolkit + ioctopus (container IoC)
+│   ├── app-react/                     # App React 18 + Redux Toolkit + ioctopus (container IoC)
+│   └── app-nextjs/                    # Next.js 15 + React 19 + Server Components + API routes
 ├── docker/
 │   ├── docker-compose.yml             # JSON Server (API de développement)
 │   └── db.json                        # Données seed
@@ -100,6 +101,10 @@ npm start              # http://localhost:4200
 # React
 cd packages/app-react
 npm run dev            # http://localhost:5173
+
+# Next.js
+cd packages/app-nextjs
+npm run dev            # http://localhost:3000
 ```
 
 ---
@@ -152,7 +157,7 @@ tests/
 └── presentation/user/create-user.presenter.spec.ts
 ```
 
-**6. Composition root** — enregistrer le use case dans `app.providers.ts` (Angular) et `container.ts` (React).
+**6. Composition root** — enregistrer le use case dans `app.providers.ts` (Angular), `container.ts` (React) et `container.ts` (Next.js).
 
 ---
 
@@ -196,6 +201,7 @@ L'assemblage des dépendances se fait en un seul endroit par app, sans que le co
 
 - Angular : `src/app/di/app.providers.ts` — utilise les `InjectionToken` natifs d'Angular + `useFactory`
 - React : `src/di/container.ts` — utilise [ioctopus](https://www.npmjs.com/package/@evyweb/ioctopus), un conteneur IoC léger
+- Next.js : `src/di/container.ts` — simples fonctions factory côté serveur (pas de conteneur IoC, les Server Components résolvent les dépendances au moment du build/requête)
 
 #### Conteneur IoC React (ioctopus)
 
@@ -229,3 +235,4 @@ Changer d'implémentation ne nécessite de modifier qu'un seul appel `bind`.
 | `packages/app-react/.env.production` | Prod React |
 | `packages/app-angular/src/environments/environment.development.ts` | Dev Angular |
 | `packages/app-angular/src/environments/environment.ts` | Prod Angular |
+| `packages/app-nextjs/.env.local` | Dev Next.js |

@@ -58,7 +58,8 @@ frontend-archetype/
 │   │           ├── infrastructure/    # Repository tests
 │   │           └── presentation/      # Presenter tests
 │   ├── app-angular/                   # Angular 17 standalone + Signals + InjectionToken
-│   └── app-react/                     # React 18 + Redux Toolkit + ioctopus (IoC container)
+│   ├── app-react/                     # React 18 + Redux Toolkit + ioctopus (IoC container)
+│   └── app-nextjs/                    # Next.js 15 + React 19 + Server Components + API routes
 ├── docker/
 │   ├── docker-compose.yml             # JSON Server (development API)
 │   └── db.json                        # Seed data
@@ -102,6 +103,10 @@ npm start              # http://localhost:4200
 # React
 cd packages/app-react
 npm run dev            # http://localhost:5173
+
+# Next.js
+cd packages/app-nextjs
+npm run dev            # http://localhost:3000
 ```
 
 ---
@@ -154,7 +159,7 @@ tests/
 └── presentation/user/create-user.presenter.spec.ts
 ```
 
-**6. Composition root** — register the use case in `app.providers.ts` (Angular) and `container.ts` (React).
+**6. Composition root** — register the use case in `app.providers.ts` (Angular), `container.ts` (React), and `container.ts` (Next.js).
 
 ---
 
@@ -198,6 +203,7 @@ Dependency wiring happens in a single place per app — the core never knows whi
 
 - **Angular**: `src/app/di/app.providers.ts` — uses Angular's native `InjectionToken` + `useFactory`
 - **React**: `src/di/container.ts` — uses [ioctopus](https://www.npmjs.com/package/@evyweb/ioctopus), a lightweight IoC container
+- **Next.js**: `src/di/container.ts` — simple server-side factory functions (no IoC container needed, Server Components resolve deps at build/request time)
 
 #### React IoC container (ioctopus)
 
@@ -231,3 +237,4 @@ Swapping an implementation only requires changing one `bind` call.
 | `packages/app-react/.env.production` | React prod |
 | `packages/app-angular/src/environments/environment.development.ts` | Angular dev |
 | `packages/app-angular/src/environments/environment.ts` | Angular prod |
+| `packages/app-nextjs/.env.local` | Next.js dev |
