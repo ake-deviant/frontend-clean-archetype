@@ -8,6 +8,9 @@ build/
 # Angular cache
 .angular/
 
+# Next.js cache and build
+.next/
+
 # Environment — local overrides only (committed .env files are safe, they contain no secrets)
 .env.local
 .env.*.local
